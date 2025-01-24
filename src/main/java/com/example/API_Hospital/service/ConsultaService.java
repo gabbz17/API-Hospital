@@ -5,8 +5,6 @@ import com.example.API_Hospital.entity.Medico;
 import com.example.API_Hospital.entity.Paciente;
 import com.example.API_Hospital.entity.Role.Convenio;
 import com.example.API_Hospital.repository.ConsultaRepository;
-import com.example.API_Hospital.repository.MedicoRepository;
-import com.example.API_Hospital.repository.PacienteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,24 +33,31 @@ public class ConsultaService {
         consulta.setValorConsulta(medico.getPrecoConsulta());
         consulta.setEsp(medico.getRole());
 
-        if (findByData(consulta.getDataHora()) == null){
-            if (consulta.getCov().equals(Convenio.ROLE_PLANOSAUDE)){
-                consulta.setValorConsulta(BigDecimal.valueOf(0));
-            }
-            if (consulta.getCov().equals(Convenio.ROLE_PARTICULAR)){
-                consulta.setValorConsulta(consulta.getValorConsulta().subtract(consulta.getDesconto()));
+        List<Consulta> cs = findByData(consulta.getDataHora());
+
+        for (Consulta cons : cs) {
+            if (findByData(consulta.getDataHora()) != null && medico.getRole().equals(cons.getEsp())) {
+                throw new RuntimeException("Vaga ja preenchida!");
+
             }
         }
 
-        Consulta cons = findByData(consulta.getDataHora());
-        if (consulta.getDataHora() == cons.getDataHora()){
-            throw new RuntimeException("Vaga ja preenchida!");
+        if (consulta.getCov().equals(Convenio.ROLE_PLANOSAUDE)){
+                    consulta.setValorConsulta(BigDecimal.valueOf(0));
+        }
+        if (consulta.getCov().equals(Convenio.ROLE_PARTICULAR)){
+                    consulta.setValorConsulta(consulta.getValorConsulta().subtract(consulta.getDesconto()));
         }
 
             return repository.save(consulta);
     }
 
-    public Consulta findByData(LocalDateTime date){
+    public List<Consulta> findByData(LocalDateTime date){
         return repository.findBydataHora(date);
     }
+
+    public List<Consulta> findAll(){
+        return repository.findAll();
+    }
+
 }

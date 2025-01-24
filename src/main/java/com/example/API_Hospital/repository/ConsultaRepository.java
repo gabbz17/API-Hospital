@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
-    Consulta findBydataHora(LocalDateTime date);
+    List<Consulta> findBydataHora(LocalDateTime date);
 }

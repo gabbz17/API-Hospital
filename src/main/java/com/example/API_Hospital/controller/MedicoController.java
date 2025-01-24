@@ -3,6 +3,8 @@ package com.example.API_Hospital.controller;
 import com.example.API_Hospital.dto.MedicoDTO;
 import com.example.API_Hospital.dto.mapper.MedicoMapper;
 import com.example.API_Hospital.entity.Medico;
+import com.example.API_Hospital.entity.Role.Convenio;
+import com.example.API_Hospital.entity.Role.Especializacao;
 import com.example.API_Hospital.service.MedicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,20 @@ public class MedicoController {
         Medico pc = service.findByName(nome);
         MedicoDTO dto = MedicoMapper.toDTO(pc);
         return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/role/{role}")
+    public ResponseEntity<List<MedicoDTO>> findByRole(@Valid @PathVariable String role){
+        Especializacao esp = Especializacao.valueOf(role);
+        List<Medico> pc = service.findByRole(esp);
+        List<MedicoDTO> dto = MedicoMapper.toAllDto(pc);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> findByRole(@Valid @PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

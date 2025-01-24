@@ -23,10 +23,16 @@ public class ConsultaController {
         return ResponseEntity.status(201).body(cons);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Consulta>> findAll(){
+        List<Consulta> cs = service.findAll();
+        return ResponseEntity.ok().body(cs);
+    }
+
     @GetMapping("/date/{date}")
-    public ResponseEntity<Consulta> findByDate(@PathVariable String date){
+    public ResponseEntity<List<Consulta>> findByDate(@PathVariable String date) {
         LocalDateTime dateTime = LocalDateTime.parse(date);
-        Consulta cs = service.findByData(dateTime);
+        List<Consulta> cs = service.findByData(dateTime);
         return ResponseEntity.ok().body(cs);
     }
 }

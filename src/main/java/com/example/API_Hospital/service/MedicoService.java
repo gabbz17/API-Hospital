@@ -1,6 +1,7 @@
 package com.example.API_Hospital.service;
 
 import com.example.API_Hospital.entity.Medico;
+import com.example.API_Hospital.entity.Role.Especializacao;
 import com.example.API_Hospital.repository.MedicoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,14 @@ public class MedicoService {
     }
 
     public Medico findByName(String nome){
-        log.info("Nome do medico: " + nome);
         return repository.findByNome(nome);
+    }
+
+    public List<Medico> findByRole(Especializacao role){
+        return repository.findByrole(role);
+    }
+
+    public void deleteById(Long id){
+        repository.deleteById(id);
     }
 }
