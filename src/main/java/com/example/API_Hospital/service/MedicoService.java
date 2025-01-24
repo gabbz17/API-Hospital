@@ -2,11 +2,13 @@ package com.example.API_Hospital.service;
 
 import com.example.API_Hospital.entity.Medico;
 import com.example.API_Hospital.repository.MedicoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class MedicoService {
 
@@ -19,5 +21,10 @@ public class MedicoService {
 
     public List<Medico> findAll(){
         return repository.findAll();
+    }
+
+    public Medico findByName(String nome){
+        log.info("Nome do medico: " + nome);
+        return repository.findByNome(nome);
     }
 }

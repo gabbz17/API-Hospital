@@ -1,9 +1,8 @@
 package com.example.API_Hospital.entity;
 
+import com.example.API_Hospital.entity.Role.Pessoa;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,21 +12,9 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 @ToString
-public class Paciente {
+public class Paciente extends Pessoa {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotBlank
-    private String nome;
-    @NotBlank
-    private String endereco;
-    @NotBlank
-    @Column(unique = true)
-    @Size(min = 10, max = 11)
-    private String numero;
     @NotNull
     private LocalDate nascimento;
 }

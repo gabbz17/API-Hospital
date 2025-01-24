@@ -1,4 +1,4 @@
-package com.example.API_Hospital.entity;
+package com.example.API_Hospital.entity.Role;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

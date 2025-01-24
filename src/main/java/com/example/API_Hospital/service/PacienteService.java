@@ -25,4 +25,8 @@ public class PacienteService {
 //        }
         return list;
     }
+
+    public Paciente findByName(String nome){
+        return repository.findByNome(nome);
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public class MedicoMapper {
 
     public static MedicoDTO toDTO(Medico medico){
-        return new MedicoDTO(medico.getId(), medico.getNome(), medico.getRole());
+        return new MedicoDTO(medico.getId(), medico.getNome(), medico.getRole(), medico.getPrecoConsulta());
     }
 
     public static List<MedicoDTO> toAllDto(List<Medico> pessoa){

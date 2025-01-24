@@ -31,4 +31,11 @@ public class MedicoController {
         return ResponseEntity.ok().body(pc1);
     }
 
+    @GetMapping("/name/{nome}")
+    public ResponseEntity<MedicoDTO> findByName(@Valid @PathVariable String nome){
+        Medico pc = service.findByName(nome);
+        MedicoDTO dto = MedicoMapper.toDTO(pc);
+        return ResponseEntity.ok().body(dto);
+    }
+
 }

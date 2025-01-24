@@ -30,4 +30,11 @@ public class PacienteController {
         List<PacienteDTO> pc1 = PacienteMapper.toAllDto(pc);
         return ResponseEntity.ok().body(pc1);
     }
+
+    @GetMapping("/name/{nome}")
+    public ResponseEntity<PacienteDTO> findByName(@Valid @PathVariable String nome){
+        Paciente pc = service.findByName(nome);
+        PacienteDTO pc1 = PacienteMapper.toDTO(pc);
+        return ResponseEntity.ok().body(pc1);
+    }
 }
