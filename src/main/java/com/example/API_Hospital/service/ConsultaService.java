@@ -4,6 +4,8 @@ import com.example.API_Hospital.entity.Consulta;
 import com.example.API_Hospital.entity.Medico;
 import com.example.API_Hospital.entity.Paciente;
 import com.example.API_Hospital.entity.Role.Convenio;
+import com.example.API_Hospital.exception.IdNotFoundException;
+import com.example.API_Hospital.exception.ListNotFoundException;
 import com.example.API_Hospital.repository.ConsultaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +35,10 @@ public class ConsultaService {
         consulta.setValorConsulta(medico.getPrecoConsulta());
         consulta.setEsp(medico.getRole());
 
-        List<Consulta> cs = findByData(consulta.getDataHora());
 
-        for (Consulta cons : cs) {
+        for (Consulta cons : findByData(consulta.getDataHora())) {
             if (findByData(consulta.getDataHora()) != null && medico.getRole().equals(cons.getEsp())) {
                 throw new RuntimeException("Vaga ja preenchida!");
-
             }
         }
 
@@ -53,11 +53,39 @@ public class ConsultaService {
     }
 
     public List<Consulta> findByData(LocalDateTime date){
-        return repository.findBydataHora(date);
+        List<Consulta> list =  repository.findBydataHora(date);
+        String hour = String.valueOf(date);
+
+        if (list.isEmpty()){
+            throw new ListNotFoundException(String.format("Consultas para a Data e Hora (%s), não encontradas!", hour));
+        }
+
+        return list;
     }
 
     public List<Consulta> findAll(){
-        return repository.findAll();
+        List<Consulta> list = repository.findAll();
+
+        if (list.isEmpty()){
+            throw new ListNotFoundException("Nenhuma consulta foi encontrada!");
+        }
+
+        return list;
+    }
+
+    public List<Consulta> findByPaciente(String nome){
+        List<Consulta> list = repository.findByPaciente(nome);
+
+        if (list.isEmpty()){
+            throw new ListNotFoundException(String.format("Nenhuma consulta com o paciente (%s) foi encontrada!", nome));
+        }
+
+        return list;
+    }
+
+    public Consulta findById(Long id){
+        return repository.findById(id).orElseThrow(() ->
+                new IdNotFoundException(String.format("Consulta com o ID (%d), não encontrada!", id)));
     }
 
 }

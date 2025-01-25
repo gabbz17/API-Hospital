@@ -35,4 +35,16 @@ public class ConsultaController {
         List<Consulta> cs = service.findByData(dateTime);
         return ResponseEntity.ok().body(cs);
     }
+
+    @GetMapping("/paciente/{nome}")
+    public ResponseEntity<List<Consulta>> findByPaciente(@PathVariable String nome) {
+        List<Consulta> cs = service.findByPaciente(nome);
+        return ResponseEntity.ok().body(cs);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Consulta> findById(@PathVariable Long id) {
+        Consulta cs = service.findById(id);
+        return ResponseEntity.ok().body(cs);
+    }
 }

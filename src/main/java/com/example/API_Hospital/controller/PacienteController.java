@@ -37,4 +37,11 @@ public class PacienteController {
         PacienteDTO pc1 = PacienteMapper.toDTO(pc);
         return ResponseEntity.ok().body(pc1);
     }
+
+    @GetMapping("/numero/{numero}")
+    public ResponseEntity<PacienteDTO> findByNumero(@Valid @PathVariable String numero){
+        Paciente pc = service.findByNumero(numero);
+        PacienteDTO pc1 = PacienteMapper.toDTO(pc);
+        return ResponseEntity.ok().body(pc1);
+    }
 }
