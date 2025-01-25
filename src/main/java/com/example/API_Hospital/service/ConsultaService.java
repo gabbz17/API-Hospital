@@ -6,6 +6,7 @@ import com.example.API_Hospital.entity.Paciente;
 import com.example.API_Hospital.entity.Role.Convenio;
 import com.example.API_Hospital.exception.IdNotFoundException;
 import com.example.API_Hospital.exception.ListNotFoundException;
+import com.example.API_Hospital.exception.NameUniqueException;
 import com.example.API_Hospital.repository.ConsultaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,9 @@ public class ConsultaService {
         consulta.setEsp(medico.getRole());
 
 
-        for (Consulta cons : findByData(consulta.getDataHora())) {
+        for (Consulta cons : findByhour(consulta.getDataHora())) {
             if (findByData(consulta.getDataHora()) != null && medico.getRole().equals(cons.getEsp())) {
-                throw new RuntimeException("Vaga ja preenchida!");
+                throw new NameUniqueException("Data e hora já preenchida!");
             }
         }
 
@@ -50,6 +51,10 @@ public class ConsultaService {
         }
 
             return repository.save(consulta);
+    }
+
+    public List<Consulta> findByhour(LocalDateTime date){
+        return repository.findBydataHora(date);
     }
 
     public List<Consulta> findByData(LocalDateTime date){
@@ -87,5 +92,7 @@ public class ConsultaService {
         return repository.findById(id).orElseThrow(() ->
                 new IdNotFoundException(String.format("Consulta com o ID (%d), não encontrada!", id)));
     }
+
+
 
 }

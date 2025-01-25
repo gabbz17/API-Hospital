@@ -1,11 +1,9 @@
 package com.example.API_Hospital.service;
 
+import com.example.API_Hospital.dto.MedicoUpdate;
 import com.example.API_Hospital.entity.Medico;
 import com.example.API_Hospital.entity.Role.Especializacao;
-import com.example.API_Hospital.exception.ConstraintViolationException;
-import com.example.API_Hospital.exception.ListNotFoundException;
-import com.example.API_Hospital.exception.NameNotFoundException;
-import com.example.API_Hospital.exception.NameUniqueException;
+import com.example.API_Hospital.exception.*;
 import com.example.API_Hospital.repository.MedicoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +53,22 @@ public class MedicoService {
         return list;
     }
 
+    public Medico findById(Long id){
+        return repository.findById(id).orElseThrow(() ->
+                new IdNotFoundException(String.format("Médico com o ID (%d), não encontrado!", id)));
+    }
+
     public void deleteById(Long id){
         repository.deleteById(id);
+    }
+
+    public Medico update(Long id, MedicoUpdate medicoUp){
+        Medico medico = findById(id);
+
+        medico.setEndereco(medicoUp.getEndereco());
+        medico.setNumero(medicoUp.getNumero());
+        medico.setEmail(medicoUp.getEmail());
+
+        return repository.save(medico);
     }
 }

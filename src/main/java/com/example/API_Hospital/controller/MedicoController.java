@@ -1,9 +1,9 @@
 package com.example.API_Hospital.controller;
 
 import com.example.API_Hospital.dto.MedicoDTO;
+import com.example.API_Hospital.dto.MedicoUpdate;
 import com.example.API_Hospital.dto.mapper.MedicoMapper;
 import com.example.API_Hospital.entity.Medico;
-import com.example.API_Hospital.entity.Role.Convenio;
 import com.example.API_Hospital.entity.Role.Especializacao;
 import com.example.API_Hospital.service.MedicoService;
 import jakarta.validation.Valid;
@@ -52,6 +52,12 @@ public class MedicoController {
     public ResponseEntity<Void> findByRole(@Valid @PathVariable Long id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Medico> update(@PathVariable Long id, @Valid @RequestBody MedicoUpdate update){
+        Medico medico = service.update(id, update);
+        return ResponseEntity.ok().body(medico);
     }
 
 }
